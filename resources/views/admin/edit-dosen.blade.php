@@ -17,32 +17,32 @@
         <div class="card shadow-sm">
             <div class="card-body">
 
-                <form action="{{ route('admin-dataDosen-store') }}" method="POST">
+                <form action="{{ route('admin-dataDosen-update', $dosen->id) }}" method="POST">
                     @csrf
 
                     <div class="row g-3">
 
                         <div class="col-md-6">
                             <label class="form-label">Nama Dosen</label>
-                            <input type="text" name="nama" class="form-control" placeholder="Masukkan nama"
+                            <input type="text" name="nama" value="{{ $dosen->nama_user }}" class="form-control" placeholder="Masukkan nama"
                                 required>
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">NIP</label>
-                            <input type="text" name="nip" class="form-control" placeholder="Masukkan NIP"
+                            <input type="text" name="nip" value="{{ $dosen->nip }}" class="form-control" placeholder="Masukkan NIP"
                                 required>
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">Email</label>
-                            <input type="email" name="email" class="form-control" placeholder="Masukkan email"
+                            <input type="email" name="email" value="{{ $dosen->email }}" class="form-control" placeholder="Masukkan email"
                                 required>
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">No HP</label>
-                            <input type="text" name="no_hp" class="form-control" placeholder="08xxxxxxxxxx"
+                            <input type="text" name="no_hp" value="{{ $dosen->no_hp }}" class="form-control" placeholder="08xxxxxxxxxx"
                                 required>
                         </div>
 

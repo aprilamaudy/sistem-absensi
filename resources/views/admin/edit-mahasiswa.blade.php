@@ -16,29 +16,29 @@
         <div class="card shadow-sm">
             <div class="card-body">
 
-                <form action="{{ route('admin-dataMahasiswa-store') }}" method="POST">
+                <form action="{{ route('admin-dataMahasiswa-update', $mahasiswa->id) }}" method="POST">
                     @csrf
 
                     <div class="row g-3">
 
                         <div class="col-md-6">
                             <label class="form-label">Nama</label>
-                            <input type="text" name="nama" class="form-control" required>
+                            <input type="text" name="nama" value="{{ $mahasiswa->nama_user }}" class="form-control" required>
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">NIM</label>
-                            <input type="text" name="nim" class="form-control" required>
+                            <input type="text" name="nim" value="{{ $mahasiswa->nim }}" class="form-control" required>
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">Email</label>
-                            <input type="email" name="email" class="form-control" required>
+                            <input type="email" name="email" value="{{ $mahasiswa->email }}" class="form-control" required>
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">No HP</label>
-                            <input type="text" name="no_hp" class="form-control" required>
+                            <input type="text" name="no_hp" value="{{ $mahasiswa->no_hp }}" class="form-control" required>
                         </div>
 
                     </div>

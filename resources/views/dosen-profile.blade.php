@@ -4,89 +4,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil Admin</title>
+    <title>Edit Profil Admin</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
         body {
-            background-color: #f4f6f9;
+            background: #f4f6f9;
         }
 
         .card {
             border-radius: 15px;
         }
 
-        .profile-header {
+        .header-blue {
             background: #0d6efd;
             color: white;
-            padding: 25px;
+            padding: 20px;
             border-top-left-radius: 15px;
             border-top-right-radius: 15px;
-            text-align: center;
+        }
+
+        .btn-primary {
+            background: #0d6efd;
+            border: none;
         }
     </style>
 </head>
 
 <body>
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
 
-            <div class="card shadow-sm border-0">
+                <div class="card shadow-sm border-0">
 
-                <!-- BODY -->
-                <div class="card-body">
+                    <!-- Header -->
+                    <div class="header-blue text-center">
+                        <h5 class="mb-0">Edit Profil Dosen</h5>
+                    </div>
 
-                    <h5 class="mb-3 fw-bold">Edit Profil</h5>
+                    <!-- Body -->
+                    <div class="card-body">
 
-                    <form action="/dosen/profile/update" method="POST">
-                        @csrf
+                        <form action="{{route('dosenProfileUpdate')}}" method="POST">
+                            @csrf
 
-                        <!-- NAMA -->
-                        <div class="mb-3">
-                            <label class="form-label">Nama</label>
-                            <input type="text"
-                                   name="name"
-                                   class="form-control"
-                                   value="{{ auth()->user()->nama_user }}"
-                                   required>
-                        </div>
+                            <div class="mb-3">
+                                <label class="form-label">Nama</label>
+                                <input type="text" class="form-control" name="nama_user"
+                                    value="{{ auth()->user()->nama_user }}" required>
+                            </div>
 
-                        <!-- USERNAME -->
-                        <div class="mb-3">
-                            <label class="form-label">Username</label>
-                            <input type="text"
-                                   name="username"
-                                   class="form-control"
-                                   value="{{ auth()->user()->username }}"
-                                   required>
-                        </div>
+                             <div class="mb-3">
+                                <label class="form-label">Nip</label>
+                                <input type="text" class="form-control" name="nip"
+                                    value="{{ auth()->user()->nip }}" required>
+                            </div>
 
-                        <!-- ROLE (READONLY) -->
-                        <div class="mb-3">
-                            <label class="form-label">Role</label>
-                            <input type="text"
-                                   class="form-control"
-                                   value="{{ auth()->user()->role }}"
-                                   readonly>
-                        </div>
+                            <div class="mb-3">
+                                <label class="form-label">Username</label>
+                                <input type="text" class="form-control" name="username"
+                                    value="{{ auth()->user()->username }}" required>
+                            </div>
 
-                        <button type="submit" class="btn btn-primary w-100">
-                            Simpan Perubahan
-                        </button>
-                    </form>
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" name="email"
+                                    value="{{ auth()->user()->email }}" required>
+                            </div>
 
-                    <hr>
+                            <div class="mb-3">
+                                <label class="form-label">No Hp</label>
+                                <input type="text" class="form-control" name="no_hp"
+                                    value="{{ auth()->user()->no_hp }}" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Password Baru</label>
+                                <input type="password" class="form-control" name="password"
+                                    placeholder="Kosongkan jika tidak ingin ganti password">
+                            </div>
+
+                            <button class="btn btn-primary w-100">Simpan Perubahan</button>
+                        </form>
+
+
+                    </div>
 
                 </div>
 
             </div>
-
         </div>
     </div>
-</div>
 
 </body>
+
 </html>

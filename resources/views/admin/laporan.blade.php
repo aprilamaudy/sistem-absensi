@@ -22,18 +22,23 @@
                         <th>Nama</th>
                         <th>Matkul</th>
                         <th>Tanggal</th>
+                        <th>Jarak</th>
                         <th>Status</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Mahasiswa Contoh</td>
-                        <td>Pemrograman</td>
-                        <td>2025-11-19</td>
-                        <td>Hadir</td>
-                    </tr>
+                    @foreach ($dataKehadiran as $no => $kehadiran)
+                        
+                        <tr>
+                            <td>{{$no + 1}}</td>
+                            <td>{{$kehadiran->user->nama_user}}</td>
+                            <td>{{$kehadiran->absensi->matkul->nama}}</td>
+                            <td>{{$kehadiran->created_at}}</td>
+                            <td>{{$kehadiran->jarak}}</td>
+                            <td>{{$kehadiran->ket}}</td>
+                        </tr>
+                    @endforeach
                 </tbody>
 
             </table>

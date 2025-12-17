@@ -34,43 +34,58 @@
 
 <body>
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
 
-            <div class="card shadow-sm border-0">
+                <div class="card shadow-sm border-0">
 
-                <!-- Header -->
-                <div class="header-blue text-center">
-                    <h5 class="mb-0">Edit Profil Admin</h5>
-                </div>
+                    <!-- Header -->
+                    <div class="header-blue text-center">
+                        <h5 class="mb-0">Edit Profil Admin</h5>
+                    </div>
 
-                <!-- Body -->
-                <div class="card-body">
+                    <!-- Body -->
+                    <div class="card-body">
 
-                    <form action="/admin/edit-profile" method="POST">
-                        @csrf
+                        <form action="/admin/edit-profile" method="POST">
+                            @csrf
 
-                        <div class="mb-3">
-                            <label class="form-label">Nama</label>
-                            <input type="text" class="form-control" name="name" placeholder="Masukkan nama">
-                        </div>
+                            <div class="mb-3">
+                                <label class="form-label">Nama</label>
+                                <input type="text" class="form-control" name="nama_user"
+                                    value="{{ auth()->user()->nama_user }}" required>
+                            </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control" name="email" placeholder="Masukkan email">
-                        </div>
+                            <div class="mb-3">
+                                <label class="form-label">Username</label>
+                                <input type="text" class="form-control" name="username"
+                                    value="{{ auth()->user()->username }}" required>
+                            </div>
 
-                        <button class="btn btn-primary w-100">Simpan Perubahan</button>
-                    </form>
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" name="email"
+                                    value="{{ auth()->user()->email }}" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Password Baru</label>
+                                <input type="password" class="form-control" name="password"
+                                    placeholder="Kosongkan jika tidak ingin ganti password">
+                            </div>
+
+                            <button class="btn btn-primary w-100">Simpan Perubahan</button>
+                        </form>
+
+
+                    </div>
 
                 </div>
 
             </div>
-
         </div>
     </div>
-</div>
 
 </body>
 

@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Absensi;
+use App\Models\Kehadiran;
+use App\Models\Matkul;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class MenuController extends Controller
 {
@@ -18,7 +23,7 @@ class MenuController extends Controller
         return view('login');
     }
 
-   
+
 
     // ======================
     // ADMIN
@@ -28,7 +33,12 @@ class MenuController extends Controller
         if (session('role') !== 'admin') {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses ke halaman admin!');
         }
-        return view('admin.dashboard');
+
+        $jumlahDosen = User::where('role', 'dosen')->count();
+        $jumlahMahasiswa = User::where('role', 'mahasiswa')->count();
+        $jumlahAdmin = User::where('role', 'admin')->count();
+
+        return view('admin.dashboard', compact('jumlahDosen', 'jumlahMahasiswa', 'jumlahAdmin'));
     }
 
     public function adminDataDosen()
@@ -120,14 +130,17 @@ class MenuController extends Controller
     // DOSEN
     // ======================
     public function dosenDashboard()
-    
+
     {
         // // // Jika role bukan dosen, tetap di halaman itu (tidak diarahkan ke admin atau mahasiswa)
         // if (Session::get('role') !== 'dosen') {
         //     return redirect()->back()->with('error', 'Anda tidak memiliki akses ke halaman dosen!');
         // }
+        $jumlahMahasiswa = User::where('role', 'mahasiswa')->count();
+        $jumlahMatkul = Matkul::count();
+        $jumlahAbsenHariIni = Absensi::where('created_at', now())->count();
 
-        return view('dosen');
+        return view('dosen', compact('jumlahMahasiswa', 'jumlahMatkul', 'jumlahAbsenHariIni'));
     }
     public function updateProfile(Request $request)
     {
@@ -154,7 +167,8 @@ class MenuController extends Controller
         // if (Session::get('role') !== 'dosen') {
         //     return redirect()->back()->with('error', 'Anda tidak memiliki akses ke halaman dosen!');
         // }   
-        return view('lihatDaftarMhs');
+        $dataMahasiswa = User::where('role', 'mahasiswa')->get();
+        return view('dosen.daftar-mahasiswa.index', compact('dataMahasiswa'));
     }
 
     public function dosenBuatAbsen()
@@ -178,7 +192,8 @@ class MenuController extends Controller
         // if (Session::get('role') !== 'dosen') {
         //     return redirect()->back()->with('error', 'Anda tidak memiliki akses ke halaman dosen!');
         // }
-        return view('riwayatabsend');
+        $dataKehadiran = Kehadiran::all();
+        return view('dosen.riwayat.index', compact('dataKehadiran'));
     }
     public function dosenProfile()
     {
@@ -188,6 +203,38 @@ class MenuController extends Controller
         return view('dosen-profile');
     }
 
+    public function dosenProfileUpdate(Request $request)
+    {
+        $user = auth()->user();
+
+        // VALIDASI
+        $request->validate([
+            'nama_user' => 'required|string|max:100',
+            'nip'  => 'required|unique:users,nip,' . $user->id,
+            'username'  => 'required|string|max:50|unique:users,username,' . $user->id,
+            'email'     => 'required|email|unique:users,email,' . $user->id,
+            'no_hp' => 'required|string|max:15',
+            'password'  => 'nullable|min:6',
+        ]);
+
+        // UPDATE DATA
+        $user->nama_user = $request->nama_user;
+        $user->nip = $request->nip;
+        $user->username  = $request->username;
+        $user->email     = $request->email;
+        $user->no_hp     = $request->no_hp;
+
+        // JIKA PASSWORD DIISI
+        if ($request->password) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return redirect('/dosen/dashboard')
+            ->with('success', 'Profil berhasil diperbarui');
+    }
+
     // ======================
     // MAHASISWA
     // ======================
@@ -195,34 +242,52 @@ class MenuController extends Controller
     public function updateProfileMhs(Request $request)
     {
         // VALIDASI
+        $user = auth()->user();
+
+
+        // VALIDASI
         $request->validate([
             'nama_user' => 'required|string|max:100',
-            'username' => 'required|string|max:50,' . Auth::id(),
+            'nim'  => 'required|unique:users,nim,' . $user->id,
+            'username'  => 'required|string|max:50|unique:users,username,' . $user->id,
+            'email'     => 'required|email|unique:users,email,' . $user->id,
+            'no_hp' => 'required|string|max:15',
+            'password'  => 'nullable|min:6',
         ]);
-
-        // USER LOGIN
-        $user = Auth::user();
 
         // UPDATE DATA
         $user->nama_user = $request->nama_user;
-        $user->username = $request->username;
+        $user->nim = $request->nim;
+        $user->username  = $request->username;
+        $user->email     = $request->email;
+        $user->no_hp     = $request->no_hp;
+
+        // JIKA PASSWORD DIISI
+        if ($request->password) {
+            $user->password = Hash::make($request->password);
+        }
+
         $user->save();
 
         // REDIRECT
         return redirect('/mahasiswa/dashboard')->with('success', 'Profil berhasil diperbarui');
-
     }
 
 
     public function mahasiswaDashboard()
     {
-       
-        return view('mahasiswa');
+        $jumlahAbsensiHariIni = Kehadiran::where('user_id', auth()->id())
+            ->whereDate('created_at', today())
+            ->count();
+
+        $totalPertemuan = Kehadiran::where('user_id', auth()->id())->count();
+        $presentasiKehadiran = $totalPertemuan / Absensi::count() * 100;
+        return view('mahasiswa', compact('jumlahAbsensiHariIni', 'totalPertemuan', 'presentasiKehadiran'));
     }
 
     public function mahasiswaLihatAbsen()
     {
-        
+
         return view('mahasiswa.lihatAbsen');
     }
 
@@ -243,22 +308,104 @@ class MenuController extends Controller
         if (Session::get('role') !== 'mahasiswa') {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses ke halaman mahasiswa!');
         }
-        return view('scan'); // video scanner
+
+        $dataAbsensi = Absensi::all();
+
+        return view('mahasiswa.scan-qr', compact('dataAbsensi')); // video scanner
     }
 
-    public function mahasiswaFormAbsen(Request $r)
+    public function mahasiswaShowQr(Request $request)
+    {
+
+        if (Session::get('role') !== 'mahasiswa') {
+            return redirect()->back()->with('error', 'Anda tidak memiliki akses ke halaman mahasiswa!');
+        }
+
+        $dataAbsensi = Absensi::find($request->absensi_id);
+
+        return view('mahasiswa.show', compact('dataAbsensi')); // video scanner
+    }
+
+    public function mahasiswaShowQrForm($absensi_id)
+    {
+        $user = User::find(auth()->id());
+        $absensi = Absensi::find(decrypt($absensi_id));
+        if (Session::get('role') !== 'mahasiswa') {
+            return redirect()->back()->with('error', 'Anda tidak memiliki akses ke halaman mahasiswa!');
+        }
+        return view('mahasiswa.form', compact('user', 'absensi'));
+    }
+
+    private function hitungJarak($lat1, $lon1, $lat2, $lon2)
+    {
+        $earthRadius = 6371000; // meter
+
+        $lat1 = deg2rad($lat1);
+        $lon1 = deg2rad($lon1);
+        $lat2 = deg2rad($lat2);
+        $lon2 = deg2rad($lon2);
+
+        $dLat = $lat2 - $lat1;
+        $dLon = $lon2 - $lon1;
+
+        $a = sin($dLat / 2) * sin($dLat / 2) +
+            cos($lat1) * cos($lat2) *
+            sin($dLon / 2) * sin($dLon / 2);
+
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+        return round($earthRadius * $c, 2); // meter
+    }
+
+
+    public function mahasiswaSubmitAbsen(Request $request)
     {
         if (Session::get('role') !== 'mahasiswa') {
-            return redirect()->back()->with('error', 'Anda tidak memiliki akses ke halaman mahasiswa!');
+            return back()->with('error', 'Anda tidak memiliki akses!');
         }
-        return view('formabsen', compact('qrData'));
-    }
 
-    public function mahasiswaKirimAbsen(Request $r)
-    {   
-        if (Session::get('role') !== 'mahasiswa') {
-            return redirect()->back()->with('error', 'Anda tidak memiliki akses ke halaman mahasiswa!');
+        $request->validate([
+            'absensi_id' => 'required',
+            'lat' => 'nullable',
+            'long' => 'nullable',
+            'ket' => 'required|in:hadir,izin,alpha',
+        ]);
+
+        $absensi = Absensi::findOrFail($request->absensi_id);
+
+        // DEFAULT
+        $jarak = null;
+        $valid = 'n/a';
+
+        // JIKA HADIR → HITUNG JARAK
+        if ($request->ket === 'hadir') {
+
+            $jarak = $this->hitungJarak(
+                $absensi->lat,
+                $absensi->long,
+                $request->lat,
+                $request->long
+            );
+
+            // CEK RADIUS
+            if ($jarak <= $absensi->radius) {
+                $valid = 'valid';
+            } else {
+                $valid = 'tidak valid';
+            }
         }
+
+        $exist = Kehadiran::where('user_id', auth()->id())->where('absensi_id', $absensi->id)->exists();
+        if (!$exist) {
+            Kehadiran::create([
+                'absensi_id' => $absensi->id,
+                'user_id' => auth()->id(),
+                'ket' => $request->ket,
+                'jarak' => $jarak,
+                'valid' => $valid,
+            ]);
+        }
+
         return redirect('/mahasiswa/riwayat')
             ->with('success', 'Absensi berhasil dikirim!');
     }
@@ -268,7 +415,9 @@ class MenuController extends Controller
         if (Session::get('role') !== 'mahasiswa') {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses ke halaman mahasiswa!');
         }
-        return view('riwayatabsend');
+
+        $dataKehadiran = Kehadiran::where('user_id', auth()->user()->id)->get();
+        return view('mahasiswa.riwayat', compact('dataKehadiran'));
     }
 
     public function mahasiswaProfile()

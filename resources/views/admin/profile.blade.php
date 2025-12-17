@@ -47,45 +47,52 @@
 
 <body>
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
 
-            <div class="card shadow-sm border-0">
+                <div class="card shadow-sm border-0">
 
-                <!-- HEADER PROFIL -->
-                <div class="profile-header text-center">
-                    <img src="https://ui-avatars.com/api/?name=Admin&size=120"
-                         class="rounded-circle mb-3" alt="Profile Photo">
+                    <!-- HEADER PROFIL -->
+                    <div class="profile-header text-center">
+                        <img src="https://ui-avatars.com/api/?name=Admin&size=120" class="rounded-circle mb-3"
+                            alt="Profile Photo">
 
-                    <h4 class="mb-0 text-white">Admin</h4>
-                    <p class="text-light">Administrator Sistem</p>
-                </div>
-
-                <!-- BODY -->
-                <div class="card-body">
-
-                    <h5 class="mb-3 fw-bold">Informasi Profil</h5>
-
-                    <div>
-                        <p><strong>Nama:</strong> {{ auth()->user()->name ?? 'Admin' }}</p>
-                        <p><strong>Email:</strong> {{ auth()->user()->email ?? 'admin@example.com' }}</p>
-                        <p><strong>Role:</strong> Administrator</p>
+                        <h4 class="mb-0 text-white">Admin</h4>
+                        <p class="text-light">Administrator Sistem</p>
                     </div>
 
-                    <hr>
+                    <!-- BODY -->
+                    <div class="card-body">
 
-                    <!-- TOMBOL -->
-                    <a href="/admin/edit-profile" class="btn btn-primary w-100 mb-2">Edit Profile</a>
-                    <a href="/admin/ubah-password" class="btn btn-outline-secondary w-100">Ubah Password</a>
+                        <h5 class="mb-3 fw-bold">Informasi Profile</h5>
+
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
+
+                        <div>
+                            <p><strong>Nama:</strong> {{ auth()->user()->nama_user ?? 'Admin' }}</p>
+                            <p><strong>Username:</strong> {{ auth()->user()->username ?? 'Admin' }}</p>
+                            <p><strong>Email:</strong> {{ auth()->user()->email ?? 'admin@example.com' }}</p>
+                            <p><strong>Role:</strong> {{ auth()->user()->role ?? 'user' }}</p>
+                        </div>
+
+                        <hr>
+
+                        <!-- TOMBOL -->
+                        <a href="/admin/edit-profile" class="btn btn-primary w-100 mb-2">Edit Profile</a>
+
+                    </div>
 
                 </div>
 
             </div>
-
         </div>
     </div>
-</div>
 
 </body>
 

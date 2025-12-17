@@ -16,35 +16,31 @@
         <div class="card shadow-sm">
             <div class="card-body">
 
-                <form action="{{ route('admin-dataMahasiswa-store') }}" method="POST">
+                <form action="{{ route('admin-matkul-store') }}" method="POST">
                     @csrf
 
                     <div class="row g-3">
 
                         <div class="col-md-6">
-                            <label class="form-label">Nama</label>
-                            <input type="text" name="nama" class="form-control" required>
+                            <label>Kode</label>
+                            <input type="text" name="kode" class="form-control mb-2">
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label">NIM</label>
-                            <input type="text" name="nim" class="form-control" required>
+                            <label>Nama Mata Kuliah</label>
+                            <input type="text" name="nama" class="form-control mb-2">
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label">Email</label>
-                            <input type="email" name="email" class="form-control" required>
-                        </div>
+                            <label>Deskripsi</label>
+                            <textarea name="des" class="form-control mb-3"></textarea>
 
-                        <div class="col-md-6">
-                            <label class="form-label">No HP</label>
-                            <input type="text" name="no_hp" class="form-control" required>
                         </div>
 
                     </div>
 
                     <div class="mt-4 d-flex justify-content-end">
-                        <a href="/admin/mahasiswa" class="btn btn-secondary me-2">Kembali</a>
+                        <a href="{{ route('admin-matkul') }}" class="btn btn-secondary">Kembali</a>
                         <button class="btn btn-primary">Simpan</button>
                     </div>
 

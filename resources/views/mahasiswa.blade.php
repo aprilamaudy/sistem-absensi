@@ -58,21 +58,21 @@
             <div class="col-md-4">
                 <div class="card p-4">
                     <h6>Presensi Hari Ini</h6>
-                    <h2 class="text-primary">3</h2>
+                    <h2 class="text-primary">{{$jumlahAbsensiHariIni}}</h2>
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="card p-4">
                     <h6>Total Pertemuan</h6>
-                    <h2 class="text-success">12</h2>
+                    <h2 class="text-success">{{$totalPertemuan}}</h2>
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="card p-4">
                     <h6>Kehadiran</h6>
-                    <h2 class="text-warning">92%</h2>
+                    <h2 class="text-warning">{{$presentasiKehadiran}}%</h2>
                 </div>
             </div>
         </div>
@@ -80,7 +80,6 @@
         <h4 class="mt-5">Menu Aksi</h4>
 
         <div class="list-group mt-3">
-            <a href="/mahasiswa/qr" class="list-group-item">🔳 Lihat QR Code</a>
             <a href="/mahasiswa/scan" class="list-group-item">📷 Scan QR Code</a>
             <a href="/mahasiswa/riwayat" class="list-group-item">📅 Riwayat Absen</a>
         </div>

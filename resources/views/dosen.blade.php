@@ -58,21 +58,21 @@
             <div class="col-md-4">
                 <div class="card p-4">
                     <h6>Total Mahasiswa</h6>
-                    <h2 class="text-primary">120</h2>
+                    <h2 class="text-primary">{{$jumlahMahasiswa}}</h2>
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="card p-4">
-                    <h6>Jumlah Kelas</h6>
-                    <h2 class="text-success">6</h2>
+                    <h6>Jumlah Matakuliah</h6>
+                    <h2 class="text-success">{{$jumlahMatkul}}</h2>
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="card p-4">
                     <h6>Absensi Hari Ini</h6>
-                    <h2 class="text-warning">21</h2>
+                    <h2 class="text-warning">{{$jumlahAbsenHariIni}}</h2>
                 </div>
             </div>
         </div>
@@ -81,7 +81,7 @@
 
         <div class="list-group mt-3">
             <a href="/dosen/daftar-siswa" class="list-group-item">Lihat Daftar Siswa</a>
-            <a href="/dosen/buat-absen" class="list-group-item">Buat Absen</a>
+            <a href="{{route('dosen.absensi')}}" class="list-group-item">Buat Absen</a>
             <a href="/dosen/riwayat" class="list-group-item">Lihat Riwayat Kehadiran Mahasiswa</a>
         </div>
 

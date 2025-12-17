@@ -72,12 +72,14 @@
         <h4>Admin Dashboard</h4>
 
         <a href="/admin">Dashboard</a>
-        <a href="/admin/dosen">Data Dosen</a>
-        <a href="/admin/mahasiswa">Data Mahasiswa</a>
-        <a href="/admin/pengaturan">Pengaturan</a>
+        <a href="{{route('admin-dataDosen')}}">Data Dosen</a>
+        <a href="{{route('admin-dataMahasiswa')}}">Data Mahasiswa</a>
+        <a href="{{route('admin-matkul')}}">Data Matakuliah</a>
+        <a href="{{route('admin-laporanAbsensi')}}">Laporan Absensi</a>
+        {{-- <a href="/admin/pengaturan">Pengaturan</a> --}}
 
         <!-- MENU PROFIL BARU -->
-        <a href="/admin/profile">Profil</a>
+        <a href="/admin/profile">Profile</a>
 
         <a href="/logout">🚪 Logout</a>
     </div>
@@ -98,21 +100,21 @@
             <div class="col-md-4">
                 <div class="card p-4 shadow-sm">
                     <h5>Total Dosen</h5>
-                    <h2 class="text-primary">32</h2>
+                    <h2 class="text-primary">{{$jumlahDosen}}</h2>
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="card p-4 shadow-sm">
                     <h5>Total Mahasiswa</h5>
-                    <h2 class="text-success">450</h2>
+                    <h2 class="text-success">{{$jumlahMahasiswa}}</h2>
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="card p-4 shadow-sm">
-                    <h5>Data Hari Ini</h5>
-                    <h2 class="text-warning">12</h2>
+                    <h5>Total Admin</h5>
+                    <h2 class="text-warning">{{$jumlahAdmin}}</h2>
                 </div>
             </div>
         </div>
@@ -122,19 +124,15 @@
             <h4>Menu Aksi Cepat</h4>
             <div class="list-group mt-3 shadow-sm">
 
-                <a class="list-group-item list-group-item-action" href="/admin/dosen/tambah">
+                <a class="list-group-item list-group-item-action" href="{{route('admin-dataDosen-tambah')}}">
                     ➕ Tambah Data Dosen
                 </a>
 
-                <a class="list-group-item list-group-item-action" href="/admin/mahasiswa/tambah">
+                <a class="list-group-item list-group-item-action" href="{{route('admin-dataDosen-tambah')}}">
                     ➕ Tambah Data Mahasiswa
                 </a>
 
-                <a class="list-group-item list-group-item-action" href="/admin/semua-data">
-                    📁 Lihat Semua Data
-                </a>
-
-                <a class="list-group-item list-group-item-action" href="/admin/laporan">
+                <a class="list-group-item list-group-item-action" href="{{route('admin-laporanAbsensi')}}">
                     📊 Laporan
                 </a>
 

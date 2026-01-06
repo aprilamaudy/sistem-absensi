@@ -92,11 +92,13 @@
 
 
                     </div>
-
+                    
+                     <a href="{{ route('dosen.dashboard') }}" class="btn btn-secondary">Kembali</a>
                 </div>
 
             </div>
         </div>
+       
     </div>
 
 </body>

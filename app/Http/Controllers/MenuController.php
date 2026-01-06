@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class MenuController extends Controller
@@ -164,42 +165,30 @@ class MenuController extends Controller
 
     public function dosenDaftarSiswa()
     {
-        // if (Session::get('role') !== 'dosen') {
-        //     return redirect()->back()->with('error', 'Anda tidak memiliki akses ke halaman dosen!');
-        // }   
         $dataMahasiswa = User::where('role', 'mahasiswa')->get();
         return view('dosen.daftar-mahasiswa.index', compact('dataMahasiswa'));
     }
 
     public function dosenBuatAbsen()
     {
-        // if (Session::get('role') !== 'dosen') {
-        //     return redirect()->back()->with('error', 'Anda tidak memiliki akses ke halaman dosen!');
-        // }   
+        
         return view('lihatDaftarMhs');
     }
 
     public function dosenValidasiLokasi()
     {
-        // if (Session::get('role') !== 'dosen') {
-        //     return redirect()->back()->with('error', 'Anda tidak memiliki akses ke halaman dosen!');
-        // }
         return view('dosen.validasiLokasi');
     }
 
     public function dosenRiwayat()
     {
-        // if (Session::get('role') !== 'dosen') {
-        //     return redirect()->back()->with('error', 'Anda tidak memiliki akses ke halaman dosen!');
-        // }
+        
         $dataKehadiran = Kehadiran::all();
         return view('dosen.riwayat.index', compact('dataKehadiran'));
     }
     public function dosenProfile()
     {
-        // if (session('role') !== 'dosen') {
-        //     return redirect()->back()->with('error', 'Anda tidak memiliki akses ke halaman dosen!');
-        // }
+       
         return view('dosen-profile');
     }
 
@@ -281,9 +270,20 @@ class MenuController extends Controller
             ->count();
 
         $totalPertemuan = Kehadiran::where('user_id', auth()->id())->count();
-        $presentasiKehadiran = $totalPertemuan / Absensi::count() * 100;
-        return view('mahasiswa', compact('jumlahAbsensiHariIni', 'totalPertemuan', 'presentasiKehadiran'));
+        $totalAbsensi = Absensi::count();
+
+        $presentasiKehadiran = 0;
+        if ($totalAbsensi > 0) {
+            $presentasiKehadiran = ($totalPertemuan / $totalAbsensi) * 100;
+        }
+
+        return view('mahasiswa', compact(
+            'jumlahAbsensiHariIni',
+            'totalPertemuan',
+            'presentasiKehadiran'
+        ));
     }
+
 
     public function mahasiswaLihatAbsen()
     {
@@ -304,24 +304,26 @@ class MenuController extends Controller
     // ======================
 
     public function mahasiswaScanQr()
-    {
-        if (Session::get('role') !== 'mahasiswa') {
-            return redirect()->back()->with('error', 'Anda tidak memiliki akses ke halaman mahasiswa!');
-        }
-
-        $dataAbsensi = Absensi::all();
-
-        return view('mahasiswa.scan-qr', compact('dataAbsensi')); // video scanner
+{
+    if (Session::get('role') !== 'mahasiswa') {
+        return redirect()->back()->with('error', 'Anda tidak memiliki akses ke halaman mahasiswa!');
     }
 
-    public function mahasiswaShowQr(Request $request)
+    // ambil semua absensi (validasi tanggal dilakukan di view & controller lanjutan)
+    $dataAbsensi = Absensi::with('matkul')->get();
+
+    return view('mahasiswa.scan-qr', compact('dataAbsensi'));
+}
+
+    public function mahasiswaShowQr(Request $request) //bts waktu
     {
 
-        if (Session::get('role') !== 'mahasiswa') {
-            return redirect()->back()->with('error', 'Anda tidak memiliki akses ke halaman mahasiswa!');
-        }
+        $dataAbsensi = Absensi::findOrFail($request->absensi_id);
 
-        $dataAbsensi = Absensi::find($request->absensi_id);
+    if (Carbon::parse($dataAbsensi->batas)->lt(Carbon::today())) {
+        return redirect()->back()->with('error', 'Absensi sudah melewati tanggal dan tidak dapat digunakan.');
+    }
+
 
         return view('mahasiswa.show', compact('dataAbsensi')); // video scanner
     }

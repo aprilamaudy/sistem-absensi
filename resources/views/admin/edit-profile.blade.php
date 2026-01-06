@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,11 +11,9 @@
         body {
             background: #f4f6f9;
         }
-
         .card {
             border-radius: 15px;
         }
-
         .header-blue {
             background: #0d6efd;
             color: white;
@@ -24,7 +21,6 @@
             border-top-left-radius: 15px;
             border-top-right-radius: 15px;
         }
-
         .btn-primary {
             background: #0d6efd;
             border: none;
@@ -34,59 +30,90 @@
 
 <body>
 
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
 
-                <div class="card shadow-sm border-0">
+            <div class="card shadow-sm border-0">
 
-                    <!-- Header -->
-                    <div class="header-blue text-center">
-                        <h5 class="mb-0">Edit Profil Admin</h5>
-                    </div>
+                <!-- Header -->
+                <div class="header-blue text-center">
+                    <h5 class="mb-0">Edit Profil Admin</h5>
+                </div>
 
-                    <!-- Body -->
-                    <div class="card-body">
+                <!-- Body -->
+                <div class="card-body">
 
-                        <form action="/admin/edit-profile" method="POST">
-                            @csrf
+                    {{-- WARNING GLOBAL --}}
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            {{ $errors->first() }}
+                        </div>
+                    @endif
 
-                            <div class="mb-3">
-                                <label class="form-label">Nama</label>
-                                <input type="text" class="form-control" name="nama_user"
-                                    value="{{ auth()->user()->nama_user }}" required>
-                            </div>
+                    <form action="{{ route('admin.edit-profile') }}" method="POST">
+                        @csrf
 
-                            <div class="mb-3">
-                                <label class="form-label">Username</label>
-                                <input type="text" class="form-control" name="username"
-                                    value="{{ auth()->user()->username }}" required>
-                            </div>
+                        {{-- NAMA --}}
+                        <div class="mb-3">
+                            <label class="form-label">Nama</label>
+                            <input type="text" name="nama_user"
+                                value="{{ old('nama_user', auth()->user()->nama_user) }}"
+                                class="form-control @error('nama_user') is-invalid @enderror" required>
 
-                            <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-control" name="email"
-                                    value="{{ auth()->user()->email }}" required>
-                            </div>
+                            @error('nama_user')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">Password Baru</label>
-                                <input type="password" class="form-control" name="password"
-                                    placeholder="Kosongkan jika tidak ingin ganti password">
-                            </div>
+                        {{-- USERNAME --}}
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" name="username"
+                                value="{{ old('username', auth()->user()->username) }}"
+                                class="form-control @error('username') is-invalid @enderror" required>
 
-                            <button class="btn btn-primary w-100">Simpan Perubahan</button>
-                        </form>
+                            @error('username')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
 
+                        {{-- EMAIL --}}
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email"
+                                value="{{ old('email', auth()->user()->email) }}"
+                                class="form-control @error('email') is-invalid @enderror" required>
 
-                    </div>
+                            @error('email')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        {{-- PASSWORD --}}
+                        <div class="mb-3">
+                            <label class="form-label">Password Baru</label>
+                            <input type="password" name="password"
+                                class="form-control @error('password') is-invalid @enderror"
+                                placeholder="Kosongkan jika tidak ingin ganti password">
+
+                            @error('password')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            Simpan Perubahan
+                        </button>
+                    </form>
 
                 </div>
 
             </div>
+
         </div>
     </div>
+</div>
 
 </body>
-
 </html>

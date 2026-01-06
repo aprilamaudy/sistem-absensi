@@ -61,8 +61,10 @@
 
             </div>
         </div>
+        <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary mt-3">Kembali</a>
 
     </div>
+    
 
 </body>
 

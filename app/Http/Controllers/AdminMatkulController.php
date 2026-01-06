@@ -21,22 +21,23 @@ class AdminMatkulController extends Controller
 
     // 🔹 SIMPAN DATA
     public function store(Request $request)
-    {
-        $request->validate([
-            'kode' => 'required|unique:matkuls,kode',
-            'nama' => 'required',
-            'des'  => 'nullable',
-        ]);
+{
+    $validated = $request->validate([
+        'kode' => 'required|unique:matkuls,kode',
+        'nama' => 'required',
+        'des'  => 'nullable',
+    ], [
+        'kode.required' => 'Kode mata kuliah wajib diisi',
+        'kode.unique'   => 'Kode mata kuliah sudah digunakan',
+        'nama.required' => 'Nama mata kuliah wajib diisi',
+    ]);
 
-        Matkul::create([
-            'kode' => $request->kode,
-            'nama' => $request->nama,
-            'des'  => $request->des,
-        ]);
+    Matkul::create($validated);
 
-        return redirect()->route('admin-matkul')
-            ->with('success', 'Mata kuliah berhasil ditambahkan');
-    }
+    return redirect()->route('admin-matkul')
+        ->with('success', 'Mata kuliah berhasil ditambahkan');
+    
+}
 
     // 🔹 FORM EDIT
     public function edit($id)

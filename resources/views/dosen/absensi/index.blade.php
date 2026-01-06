@@ -70,7 +70,7 @@
 
             </div>
         </div>
-
+        <a href="{{ route('dosen.dashboard') }}" class="btn btn-secondary">Kembali</a>
     </div>
 
 </body>

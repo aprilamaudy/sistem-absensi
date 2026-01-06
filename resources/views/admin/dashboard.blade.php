@@ -71,15 +71,15 @@
     <div class="sidebar">
         <h4>Admin Dashboard</h4>
 
-        <a href="/admin">Dashboard</a>
+        <a href="/admin/dashboard">Dashboard</a>
         <a href="{{route('admin-dataDosen')}}">Data Dosen</a>
         <a href="{{route('admin-dataMahasiswa')}}">Data Mahasiswa</a>
         <a href="{{route('admin-matkul')}}">Data Matakuliah</a>
         <a href="{{route('admin-laporanAbsensi')}}">Laporan Absensi</a>
         {{-- <a href="/admin/pengaturan">Pengaturan</a> --}}
 
-        <!-- MENU PROFIL BARU -->
-        <a href="/admin/profile">Profile</a>
+        <!-- MENU PROFIL BARU
+        <a href="/admin/profile">Profile</a> -->
 
         <a href="/logout">🚪 Logout</a>
     </div>

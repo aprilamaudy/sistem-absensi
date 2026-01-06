@@ -26,5 +26,7 @@ Instascan.Camera.getCameras().then(function (cameras) {
 });
 </script>
 
+
 </body>
 </html>
+ 

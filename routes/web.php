@@ -97,6 +97,8 @@ Route::prefix('admin')
         Route::get('/profile', [AdminProfileController::class, 'index']);
         Route::get('/edit-profile', [AdminProfileController::class, 'ubah']);
         Route::post('/edit-profile', [AdminProfileController::class, 'update']);
+    
+
     });
 
 Route::prefix('dosen')

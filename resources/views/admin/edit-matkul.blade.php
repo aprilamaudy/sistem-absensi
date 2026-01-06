@@ -21,27 +21,65 @@
 
                     <div class="row g-3">
 
+                        <!-- KODE -->
                         <div class="col-md-6">
                             <label>Kode</label>
-                            <input type="text" name="kode" value="{{ $matkul->kode }}" class="form-control mb-2">
+                            <input 
+                                type="text" 
+                                name="kode" 
+                                value="{{ old('kode', $matkul->kode) }}" 
+                                class="form-control mb-1 @error('kode') is-invalid @enderror"
+                            >
+
+                          
+                               
                         </div>
 
+                        <!-- NAMA -->
                         <div class="col-md-6">
                             <label>Nama Mata Kuliah</label>
-                            <input type="text" name="nama" value="{{ $matkul->nama }}" class="form-control mb-2">
+                            <input 
+                                type="text" 
+                                name="nama" 
+                                value="{{ old('nama', $matkul->nama) }}" 
+                                class="form-control mb-1 @error('nama') is-invalid @enderror"
+                            >
+
+                            @error('nama')
+                                <small class="text-danger">
+                                    Nama mata kuliah wajib diisi
+                                </small>
+                            @enderror
                         </div>
 
+                        <!-- DESKRIPSI -->
                         <div class="col-md-6">
                             <label>Deskripsi</label>
-                            <textarea name="des" class="form-control mb-3">{{ $matkul->des }}</textarea>
+                            <textarea 
+                                name="des" 
+                                class="form-control mb-1 @error('des') is-invalid @enderror"
+                            >{{ old('des', $matkul->des) }}</textarea>
 
+                            @error('des')
+                                <small class="text-danger">
+                                    Deskripsi wajib diisi
+                                </small>
+                            @enderror
                         </div>
-                        
+
                     </div>
 
-                    <div class="mt-4 d-flex justify-content-end">
-                        <a href="{{ route('admin-matkul') }}" class="btn btn-secondary">Kembali</a>
-                        <button class="btn btn-primary">Simpan</button>
+                     <small class="text-danger">
+                                    Kode tidak boleh sama
+                                </small>
+
+                    <div class="mt-4 d-flex justify-content-end gap-2">
+                        <a href="{{ route('admin-matkul') }}" class="btn btn-secondary">
+                            Kembali
+                        </a>
+                        <button class="btn btn-primary">
+                            Simpan
+                        </button>
                     </div>
 
                 </form>

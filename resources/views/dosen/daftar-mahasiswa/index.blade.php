@@ -44,8 +44,10 @@
                     </tbody>
                 </table>
             </div>
+            <a href="{{ route('dosen.dashboard') }}" class="btn btn-secondary mt-3">Kembali</a>
 
         </div>
+        
     </div>
 
 </div>

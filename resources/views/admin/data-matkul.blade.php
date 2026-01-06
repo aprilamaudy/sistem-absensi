@@ -53,11 +53,11 @@
                 </tbody>
 
             </table>
-
         </div>
     </div>
+            <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Kembali</a>
 
 </div>
-
+    
 </body>
 </html>

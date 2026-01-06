@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('nim')->nullable()->unique();
             $table->string('nip')->nullable()->unique();
             $table->string('email')->nullable()->unique();
-            $table->string('no_hp')->nullable();
+            $table->string('no_hp')->nullable();    
             $table->string('password');
             $table->enum('role', ['dosen', 'mahasiswa', 'admin']);
             $table->timestamps();

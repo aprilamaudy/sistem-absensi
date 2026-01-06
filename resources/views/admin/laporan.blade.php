@@ -22,7 +22,7 @@
                         <th>Nama</th>
                         <th>Matkul</th>
                         <th>Tanggal</th>
-                        <th>Jarak</th>
+                        <!-- <th>Jarak</th> -->
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -35,7 +35,7 @@
                             <td>{{$kehadiran->user->nama_user}}</td>
                             <td>{{$kehadiran->absensi->matkul->nama}}</td>
                             <td>{{$kehadiran->created_at}}</td>
-                            <td>{{$kehadiran->jarak}}</td>
+                            <!-- <td>{{$kehadiran->jarak}}</td> -->
                             <td>{{$kehadiran->ket}}</td>
                         </tr>
                     @endforeach
@@ -45,6 +45,7 @@
 
         </div>
     </div>
+    <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary mt-3">Kembali</a>
 
 </div>
 
